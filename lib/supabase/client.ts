@@ -1,0 +1,20 @@
+"use client";
+
+import { createBrowserClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+/**
+ * Supabase client for the BROWSER. Uses only the public URL and publishable key.
+ * Data access is protected by Row Level Security policies in the database.
+ * Returns null when Supabase isn't configured, so callers can fall back.
+ */
+let browserClient: SupabaseClient | null = null;
+
+export function getBrowserSupabase(): SupabaseClient | null {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  browserClient ??= createBrowserClient(url, key);
+  return browserClient;
+}

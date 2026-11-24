@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/*
+ * NEXUS DESIGN TOKENS
+ * ───────────────────
+ * The palette from the project brief is defined once here. Tailwind turns each
+ * --color-* token into utilities, e.g. --color-card → bg-card, border-card.
+ * Components never use raw hex codes.
+ */
+@theme {
+  --color-background: #111315;
+  --color-surface: #1a1d20;
+  --color-card: #222629;
+  --color-border: #353a3e;
+  --color-foreground: #e5e7e8;
+  --color-secondary: #a1a6aa;
+  --color-muted: #858b90;
+  --color-accent: #f57c30;
+  --color-accent-hover: #ff914d;
+  /* Text colour used on top of the orange accent (dark for strong contrast). */
+  --color-on-accent: #111315;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Minimal rounded corners, as agreed. */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+    color: var(--color-foreground);
+  }
+
+  /* Clear, consistent keyboard focus (accessibility). */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+}
+
+/* Very subtle grid used behind the hero only. Fades out towards the edges. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-border) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 45%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 30% 40%, #000 30%, transparent 100%);
+}
+
+/* Small mono "eyebrow" labels such as "// LEARN · EXPLORE · BUILD". */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* Readable long-form text on topic and project pages. */
+@utility prose-nexus {
+  color: var(--color-secondary);
+  line-height: 1.75;
+  max-width: 68ch;
+}
